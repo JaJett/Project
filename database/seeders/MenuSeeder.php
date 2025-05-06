@@ -15,23 +15,23 @@ class MenuSeeder extends Seeder
     {
         $menus = [
             [
-                'name' => 'Nasi Goreng Spesial',
-                'description' => 'Nasi goreng dengan telur, ayam, dan sayur.',
-                'price' => 20000,
-                'image' => 'nasi-goreng.jpg',
+                'name' => 'Cheese Cuit Stroberry',
+                'description' => 'Cheese Cuit Dengan Toping Selai Stroberry',
+                'price' => 7000,
+                'image' => 'cheese-cuit-stroberry.jpg',
             ],
             [
-                'name' => 'Es Teh Manis',
-                'description' => 'Teh manis dingin segar.',
-                'price' => 5000,
-                'image' => 'es-teh.jpg',
+                'name' => 'Cheese Cuit Original',
+                'description' => 'Cheese Cuit Dengan Toping Crumble Original',
+                'price' => 7000,
+                'image' => 'cheese-cuit-original.jpg',
 
             ],
             [
-                'name' => 'Ayam Bakar',
-                'description' => 'Ayam bakar dengan bumbu khas.',
-                'price' => 25000,
-                'image' => 'ayam-bakar.jpg',
+                'name' => 'Cheese Cuit Macha',
+                'description' => 'Cheese Cuit Dengan Toping Crumble Macha',
+                'price' => 7000,
+                'image' => 'cheese-cuit-Macha.jpg',
 
             ],
         ]
