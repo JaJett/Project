@@ -40,19 +40,40 @@
                 <div class="mb-4">
                     <label for="pickup_date" class="block font-semibold mb-2 text-gray-700">Tanggal Ambil</label>
                     <input type="date" name="pickup_date" id="pickup_date"
-                        class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
-                        required>
+                           class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
+                           required>
                 </div>
 
-                {{-- Tambahkan menu dan kuantitas --}}
-                @foreach ($menus as $menu)
-                    <div class="mb-4">
-                        <label class="block font-semibold mb-1 text-gray-700">{{ $menu->name }} - Rp{{ number_format($menu->price, 0, ',', '.') }}</label>
-                        <input type="number" name="menus[{{ $menu->id }}]" min="0"
-                               class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
-                               placeholder="Jumlah pesanan">
+                <div class="mb-6">
+                    <label class="block font-semibold mb-2 text-gray-700">Menu Pesanan</label>
+                    <div id="menu-container"></div>
+
+                    <button type="button" onclick="addMenuRow()"
+                        class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+                        + Tambah Menu
+                    </button>
+                </div>
+
+                {{-- Template row --}}
+                <template id="menu-row-template">
+                    <div class="menu-row flex items-center space-x-4 mb-4">
+                        <select name="menus_ids[]" class="menu-select w-1/2 border border-gray-300 px-4 py-2 rounded-lg text-gray-900">
+                            <option value="">Pilih Menu</option>
+                            @foreach ($menus as $menu)
+                                <option value="{{ $menu->id }}">{{ $menu->name }} - Rp{{ number_format($menu->price, 0, ',', '.') }}</option>
+                            @endforeach
+                        </select>
+
+                        <input type="number" name="quantities[]" min="1"
+                            class="w-1/4 border border-gray-300 px-4 py-2 rounded-lg text-gray-900"
+                            placeholder="Jumlah">
+
+                        <button type="button" onclick="removeMenuRow(this)"
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg">
+                            Hapus
+                        </button>
                     </div>
-                @endforeach
+                </template>
 
                 <div class="flex justify-end space-x-4 mt-6">
                     <a href="{{ route('user.orders.index') }}"
@@ -67,4 +88,22 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function addMenuRow() {
+            const container = document.getElementById('menu-container');
+            const template = document.getElementById('menu-row-template');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+        }
+
+        function removeMenuRow(button) {
+            button.closest('.menu-row').remove();
+        }
+
+        // Tambahkan satu baris menu saat form pertama kali dibuka
+        document.addEventListener('DOMContentLoaded', function () {
+            addMenuRow();
+        });
+    </script>
 </x-app-layout>

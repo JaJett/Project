@@ -4,7 +4,7 @@
 
         {{-- Grafik Penjualan Harian --}}
         <div class="bg-white p-6 rounded shadow mb-6">
-            <h2 class="text-lg font-semibold mb-4">Penjualan 7 Hari Terakhir</h2>
+            <h2 class="text-lg font-semibold mb-4">Penjualan Selama Setahun</h2>
             <canvas id="salesChart" height="100"></canvas>
         </div>
 
@@ -14,16 +14,6 @@
             <ul class="list-disc list-inside text-gray-700">
                 @foreach ($menuTerlaris as $item)
                     <li>{{ $item->menu->name }} - {{ $item->total }} Terjual</li>
-                @endforeach
-            </ul>
-        </div>
-
-        {{-- Aktivitas Kasir --}}
-        <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold mb-4">Aktivitas Kasir</h2>
-            <ul class="list-disc list-inside text-gray-700">
-                @foreach ($aktivitasKasir as $kasir)
-                    <li>{{ $kasir['nama'] }} - {{ $kasir['jumlah_transaksi'] }} transaksi</li>
                 @endforeach
             </ul>
         </div>

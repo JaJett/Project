@@ -51,9 +51,9 @@ class DashboardController extends Controller
             });
 
         if ($request->filled('from') && $request->filled('to')) {
-            $query->whereBetween('created_at', [$request->from, $request->to]);
+            $query->whereBetween('pickup_date', [$request->from, $request->to]);
         } elseif ($request->filled('from')) {
-            $query->whereDate('created_at', $request->from);
+            $query->whereDate('pickup_date', $request->from);
         }
 
         if ($request->filled('menu_id')) {
@@ -77,7 +77,7 @@ class DashboardController extends Controller
     {
         // Penjualan per hari (7 hari terakhir)
         $penjualanHarian = Order::where('status', 'selesai')
-            ->whereDate('created_at', '>=', now()->subDays(6))
+            ->whereDate('pickup_date', '>=', now()->subDays(360))
             ->get()
             ->groupBy(function ($order) {
                 return $order->created_at->format('Y-m-d');

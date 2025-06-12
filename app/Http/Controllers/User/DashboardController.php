@@ -18,7 +18,16 @@ class DashboardController extends Controller
         ->latest()
         ->first();
 
-        return view('user.dashboard', compact('latestOrderItem'));
+        $totalProdukTerjual = OrderItem::whereHas('order', function ($q) {
+            $q->where('user_id', auth()->id());
+        })->sum('quantity');
 
+        $totalKeuntungan = OrderItem::whereHas('order', function ($q) {
+            $q->where('user_id', auth()->id());
+        })->join('menus', 'order_items.menu_id', '=', 'menus.id')
+          ->selectRaw('SUM(order_items.quantity * menus.price) as total')
+          ->value('total');
+
+        return view('user.dashboard', compact('latestOrderItem', 'totalProdukTerjual', 'totalKeuntungan'));
     }
 }

@@ -18,6 +18,27 @@
                 @method('PUT')
 
                 <div class="mb-4">
+                    <label for="customer_name" class="block font-semibold mb-2 text-gray-700">Nama Pelanggan</label>
+                    <input type="text" name="customer_name" id="customer_name"
+                        class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
+                        value="{{ old('customer_name', $order->customer_name) }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="customer_address" class="block font-semibold mb-2 text-gray-700">Alamat Pelanggan</label>
+                    <input type="text" name="customer_address" id="customer_address"
+                        class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
+                        value="{{ old('customer_address', $order->customer_address) }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="customer_phone" class="block font-semibold mb-2 text-gray-700">Nomor HP Pelanggan</label>
+                    <input type="text" name="customer_phone" id="customer_phone"
+                        class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"
+                        value="{{ old('customer_phone', $order->customer_phone) }}" required>
+                </div>
+
+                <div class="mb-4">
                     <label for="pickup_date" class="block font-semibold mb-2 text-gray-700">Tanggal Ambil</label>
                     <input type="date" name="pickup_date" id="pickup_date"
                         class="w-full border border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900"

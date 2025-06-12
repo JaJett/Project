@@ -26,51 +26,54 @@ class OrderController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_address' => 'required|string|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'pickup_date' => 'required|date',
-            'menus' => 'required|array',
+{
+    $request->validate([
+        'customer_name' => 'required|string|max:255',
+        'customer_address' => 'required|string|max:255',
+        'customer_phone' => 'required|string|max:20',
+        'pickup_date' => 'required|date',
+        'menus_ids' => 'required|array',
+        'quantities' => 'required|array',
+    ]);
+
+    DB::transaction(function () use ($request) {
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'customer_name' => $request->customer_name,
+            'customer_address' => $request->customer_address,
+            'customer_phone' => $request->customer_phone,
+            'pickup_date' => $request->pickup_date,
+            'status' => 'menunggu',
+            'total_price' => 0,
         ]);
 
-        DB::transaction(function () use ($request) {
-            $order = Order::create([
-                'user_id' => auth()->id(),
-                'customer_name' => $request->customer_name,
-                'customer_address' => $request->customer_address,
-                'customer_phone' => $request->customer_phone,
-                'pickup_date' => $request->pickup_date,
-                'status' => 'menunggu',
-                'total_price' => 0,
+        $total = 0;
+        foreach ($request->menus_ids as $index => $menuId) {
+            $quantity = (int) $request->quantities[$index];
+            if ($quantity < 1) continue;
+
+            $menu = Menu::find($menuId);
+            if (!$menu) continue;
+
+            $subtotal = $menu->price * $quantity;
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'menu_id' => $menu->id,
+                'quantity' => $quantity,
+                'price' => $menu->price,
+                'subtotal' => $subtotal,
             ]);
 
-            $total = 0;
+            $total += $subtotal;
+        }
 
-            foreach ($request->menus as $menuId => $quantity) {
-                if ($quantity < 1) continue;
+        $order->update(['total_price' => $total]);
+    });
 
-                $menu = Menu::find($menuId);
-                if (!$menu) continue;
+    return redirect()->route('user.orders.index')->with('success', 'Pesanan berhasil dibuat!');
+}
 
-                $subtotal = $menu->price * $quantity;
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'menu_id' => $menu->id,
-                    'quantity' => $quantity,
-                    'price' => $menu->price,
-                    'subtotal' => $subtotal,
-                ]);
-
-                $total += $subtotal;
-            }
-
-            $order->update(['total_price' => $total]);
-        });
-
-        return redirect()->route('user.orders.index')->with('success', 'Pesanan berhasil dibuat!');
-    }
 
     public function edit($id)
     {
@@ -88,6 +91,7 @@ class OrderController extends Controller
             'pickup_date' => 'required|date',
             'menus' => 'required|array',
         ]);
+
 
         DB::transaction(function () use ($request, $id) {
             $order = Order::where('user_id', auth()->id())->findOrFail($id);

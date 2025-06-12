@@ -18,6 +18,12 @@
                 </a>
             </div>
 
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+                <h2 class="text-xl font-semibold mb-2 text-gray-700">Produk Terjual</h2>
+                <p class="text-gray-500">Total keuntungan dari penjualan:</p>
+                <div class="text-3xl font-bold text-blue-600">Rp{{ number_format($totalKeuntungan, 0, ',', '.') }}</div>
+            </div>
+
             <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
                 <h3 class="text-lg font-semibold text-gray-700">Riwayat Pesanan</h3>
                 <p class="text-gray-500 mb-4">Lihat semua pesanan kamu sebelumnya.</p>
