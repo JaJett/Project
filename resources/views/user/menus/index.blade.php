@@ -26,7 +26,7 @@
                             <tr class="border-b border-gray-700 hover:bg-gray-700 transition">
                                 <td class="px-6 py-4">
                                     @if ($menu->image)
-                                        <img src="{{ asset('storage/' . $menu->image) }}" alt="Gambar Menu" class="w-16 h-16 object-cover rounded">
+                                        <img src="{{ asset('menu_images/' . $menu->image) }}" alt="{{ $menu->name }}" width="150" class="w-16 h-16 object-cover rounded">
                                     @else
                                         <span class="text-gray-400 italic">Tidak ada gambar</span>
                                     @endif

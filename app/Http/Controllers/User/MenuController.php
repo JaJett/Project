@@ -30,23 +30,30 @@ class MenuController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Debug input
-        \Log::info('Request masuk ke store()', $request->all());
-
-        // Proses upload gambar jika ada
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('menu_images', 'public');
-        }
-
-        // Simpan data ke database, dengan penanganan error
         try {
-            Menu::create($validated);
+            // Buat instance menu
+            $menu = new Menu();
+            $menu->name = $validated['name'];
+            $menu->description = $validated['description'] ?? null;
+            $menu->price = $validated['price'];
+
+            // Upload gambar jika ada
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('menu_images'), $filename);
+                $menu->image = $filename; // Simpan nama file saja
+            }
+
+            $menu->save();
+
             return redirect()->route('user.menus.index')->with('success', 'Menu berhasil ditambahkan.');
         } catch (\Exception $e) {
             \Log::error('Gagal menyimpan menu: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
+
 
 
     public function edit($id)

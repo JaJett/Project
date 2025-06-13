@@ -55,9 +55,9 @@
                 </div>
 
                 {{-- Template row --}}
-                <template id="menu-row-template">
-                    <div class="menu-row flex items-center space-x-4 mb-4">
-                        <select name="menus_ids[]" class="menu-select w-1/2 border border-gray-300 px-4 py-2 rounded-lg text-gray-900">
+               <template id="menu-row-template">
+                    <div class="menu-row grid grid-cols-12 gap-4 mb-4">
+                        <select name="menus_ids[]" class="col-span-6 border border-gray-300 px-4 py-2 rounded-lg text-gray-900">
                             <option value="">Pilih Menu</option>
                             @foreach ($menus as $menu)
                                 <option value="{{ $menu->id }}">{{ $menu->name }} - Rp{{ number_format($menu->price, 0, ',', '.') }}</option>
@@ -65,15 +65,16 @@
                         </select>
 
                         <input type="number" name="quantities[]" min="1"
-                            class="w-1/4 border border-gray-300 px-4 py-2 rounded-lg text-gray-900"
+                            class="col-span-4 border border-gray-300 px-4 py-2 rounded-lg text-gray-900"
                             placeholder="Jumlah">
 
                         <button type="button" onclick="removeMenuRow(this)"
-                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg">
+                            class="col-span-2 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg">
                             Hapus
                         </button>
                     </div>
                 </template>
+
 
                 <div class="flex justify-end space-x-4 mt-6">
                     <a href="{{ route('user.orders.index') }}"

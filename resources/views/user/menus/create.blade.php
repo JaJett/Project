@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div class="w-full max-w-2xl bg-white p-10 rounded-xl shadow-2xl mt-12">
+        <div class="w-full max-w-7xl bg-white p-10 rounded-xl shadow-2xl mt-12">
             <h1 class="text-3xl font-bold mb-6 text-gray-900">Tambah Menu</h1>
 
             @if ($errors->any())

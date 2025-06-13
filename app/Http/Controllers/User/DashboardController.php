@@ -19,14 +19,18 @@ class DashboardController extends Controller
         ->first();
 
         $totalProdukTerjual = OrderItem::whereHas('order', function ($q) {
-            $q->where('user_id', auth()->id());
+            $q->where('user_id', auth()->id())
+            ->where('status', 'selesai');
         })->sum('quantity');
 
+
         $totalKeuntungan = OrderItem::whereHas('order', function ($q) {
-            $q->where('user_id', auth()->id());
+            $q->where('user_id', auth()->id())
+            ->where('status', 'selesai');
         })->join('menus', 'order_items.menu_id', '=', 'menus.id')
-          ->selectRaw('SUM(order_items.quantity * menus.price) as total')
-          ->value('total');
+        ->selectRaw('SUM(order_items.quantity * menus.price) as total')
+        ->value('total');
+
 
         return view('user.dashboard', compact('latestOrderItem', 'totalProdukTerjual', 'totalKeuntungan'));
     }
