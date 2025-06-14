@@ -15,34 +15,45 @@ use App\Models\Order;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        $totalMenus = Menu::count();
-        $totalUsers = User::count();
-        $totalAdmins = User::where('role', 'admin')->count();
+{
+    $totalMenus = Menu::count();
+    $totalUsers = User::count();
+    $totalAdmins = User::where('role', 'admin')->count();
 
-        // Ambil total penjualan dari order yang statusnya selesai
-        $totalPenjualan = Order::where('status', 'selesai')
-            ->with('items') // eager loading
-            ->get()
-            ->flatMap(function ($order) {
-                return $order->items;
-            })
-            ->sum(function ($item) {
+    $totalPenjualan = Order::where('status', 'selesai')
+        ->with('items')
+        ->get()
+        ->flatMap(function ($order) {
+            return $order->items;
+        })
+        ->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+    $latestMenus = Menu::latest()->take(5)->get();
+
+    // Tambahkan ini
+    $penjualanHarian = Order::where('status', 'selesai')
+        ->whereDate('pickup_date', '>=', now()->subDays(30)) // bisa ubah ke 7, 365 dll
+        ->get()
+        ->groupBy(function ($order) {
+            return $order->created_at->format('Y-m-d');
+        })
+        ->map(function ($orders) {
+            return $orders->flatMap->items->sum(function ($item) {
                 return $item->price * $item->quantity;
             });
+        });
 
-        // Ambil 5 menu terbaru
-        $latestMenus = Menu::latest()->take(5)->get();
-
-        return view('admin.dashboard', compact(
-            'totalMenus',
-            'totalUsers',
-            'totalAdmins',
-            'totalPenjualan',
-            'latestMenus'
-        ));
-    }
-
+    return view('admin.dashboard', compact(
+        'totalMenus',
+        'totalUsers',
+        'totalAdmins',
+        'totalPenjualan',
+        'latestMenus',
+        'penjualanHarian' // jangan lupa ini
+    ));
+}
     public function salesReport(Request $request)
     {
         $query = OrderItem::with(['order', 'menu'])
