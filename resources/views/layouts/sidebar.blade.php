@@ -1,9 +1,10 @@
-<div class="h-screen bg-gray-900 text-white w-64 flex flex-col shadow-lg">
+<div class="fixed inset-0 w-64 bg-gray-900 text-white flex flex-col shadow-lg z-50 overflow-y-auto print:hidden no-print">
     <div class="text-2xl font-bold p-6 border-b border-gray-700">
         {{ Auth::user()->role === 'admin' ? 'Admin Panel' : 'Kasir Panel' }}
     </div>
 
-    <nav class="flex-1 p-4 space-y-2 text-lg">
+    {{-- scroll hanya bagian menu/nav --}}
+    <nav class="flex-1 p-4 space-y-2 text-lg overflow-y-auto">
         @if (Auth::user()->role === 'admin')
             <a href="{{ route('admin.dashboard') }}"
                class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition">
@@ -23,7 +24,7 @@
             </a>
         @elseif (Auth::user()->role === 'user')
             <a href="{{ route('user.dashboard') }}"
-                class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition">
+               class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition">
                 🏠 Dashboard
             </a>
             <a href="{{ route('user.orders.create') }}"

@@ -12,12 +12,23 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-full {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+        }
+    </style>
 </head>
 <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900">
     <div class="min-h-screen flex">
         @include('layouts.sidebar')
 
-        <div class="flex-1 p-4">
+        <div class="flex-1 p-4 ml-64 print-full">
             @isset($header)
                 <header class="bg-white dark:bg-gray-800 shadow mb-4 rounded-md">
                     <div class="max-w-7xl mx-auto py-4 px-6 lg:px-8">
@@ -26,7 +37,7 @@
                 </header>
             @endisset
 
-            <main>
+            <main class="min-h-fit overflow-auto">
                 {{ $slot }}
             </main>
         </div>

@@ -1,7 +1,18 @@
 <x-app-layout>
-    <div class="max-w-screen-lg mx-auto py-6 px-4">
+<div class="max-w-screen-lg mx-auto py-6 px-4 min-h-screen">
         <h1 class="text-3xl font-bold mb-6 text-white">Dashboard Admin</h1>
-
+        <form action="{{ route('admin.dashboard') }}" method="GET" class="mb-6 flex gap-2 items-center">
+            <label for="month" class="text-white">Filter Bulan:</label>
+            <select name="month" id="month" class="rounded p-1">
+                <option value="">Semua</option>
+                @foreach (range(1, 12) as $m)
+                    <option value="{{ $m }}" {{ request('month') == $m ? 'selected' : '' }}>
+                        {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Terapkan</button>
+        </form>
         {{-- Statistik Ringkas --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
             <div class="bg-white p-6 rounded shadow text-center">
@@ -26,7 +37,7 @@
         <div class="grid grid-cols-1 gap-4 mb-4">
             <div class="bg-white p-4 rounded shadow">
                 <h2 class="text-base font-semibold mb-2 text-gray-700">Penjualan 30 Hari Terakhir</h2>
-                <canvas id="salesChart" width="200px" height="30px"></canvas>
+                <canvas id="salesChart" width="180xp" height="30px"></canvas>
             </div>
         </div>
 
@@ -34,12 +45,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-white p-4 rounded shadow">
                 <h2 class="text-base font-semibold mb-2 text-gray-700">Pendapatan Bulanan</h2>
-                <canvas id="incomeChart" width="200px" height="70px"></canvas>
+                <canvas id="incomeChart" width="180xp" height="70px"></canvas>
             </div>
 
             <div class="bg-white p-4 rounded shadow">
                 <h2 class="text-base font-semibold mb-2 text-gray-700">Menu Terlaris</h2>
-                <canvas id="menuChart" width="200px" height="70px"></canvas>
+                <canvas id="menuChart" width="180xp" height="70px"></canvas>
             </div>
         </div>
 
