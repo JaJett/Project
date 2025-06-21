@@ -16,7 +16,7 @@ class DashboardController extends Controller
 {
         public function index(Request $request)
         {
-            $month = $request->input('month');
+            $month = $request->input('month') ? (int) $request->input('month') : null;
 
             $orders = Order::where('status', 'selesai')
                 ->when($month, fn($q) => $q->whereMonth('pickup_date', $month))
@@ -56,6 +56,9 @@ class DashboardController extends Controller
                 ->orderByDesc('total')
                 ->take(5)
                 ->get();
+            $namaBulan = $month
+                ? \Carbon\Carbon::create()->month($month)->translatedFormat('F')
+                : null;
 
             return view('admin.dashboard', compact(
                 'totalMenus',
@@ -64,7 +67,8 @@ class DashboardController extends Controller
                 'totalPenjualan',
                 'penjualanHarian',
                 'pendapatanBulanan',
-                'menuTerlaris'
+                'menuTerlaris',
+                'namaBulan'
             ));
         }
 

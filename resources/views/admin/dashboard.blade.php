@@ -36,7 +36,13 @@
             {{-- Grafik Penjualan Harian --}}
         <div class="grid grid-cols-1 gap-4 mb-4">
             <div class="bg-white p-4 rounded shadow">
-                <h2 class="text-base font-semibold mb-2 text-gray-700">Penjualan 30 Hari Terakhir</h2>
+                <h2 class="text-base font-semibold mb-2 text-gray-700">
+                    @if ($namaBulan)
+                        Penjualan Bulan {{ $namaBulan }} {{ now()->year }}
+                    @else
+                        Penjualan 30 Hari Terakhir ({{ now()->year }})
+                    @endif
+                </h2>
                 <canvas id="salesChart" width="180xp" height="30px"></canvas>
             </div>
         </div>
@@ -90,7 +96,12 @@
                     borderWidth: 1
                 }]
             },
-            options: { responsive: true }
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
         });
 
         // Menu Terlaris
